@@ -1,43 +1,47 @@
-
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
- 
+
 /* ===== CSS VARIABLES ===== */
 :root {
-  --bg:        #0a1628 ;
-  --surface:   #ffffff;
-  --ink:       #1a1614;
-  --ink-soft:  #6b6460;
-  --accent:    #d4476a;
-  --accent2:   #1982c4;
-  --cyan:      #00e5ff;
-  --purple:    #7c3aed;
-  --gold:      #c9963a;
-  --teal:      #0f8a80;
-  --border:    rgba(0,0,0,0.08);
-  --shadow-sm: 0 2px 12px rgba(0,0,0,0.06);
-  --shadow-md: 0 8px 32px rgba(0,0,0,0.10);
-  --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
-  --radius-sm: 12px;
-  --radius-md: 20px;
-  --radius-lg: 32px;
-  --serif:     'DM Serif Display', serif;
-  --sans:      'DM Sans', sans-serif;
-  --display:   'Syne', sans-serif;
+  --bg:          #0a1628;
+  --surface:     #ffffff;
+  --ink:         #1a1614;
+  --ink-soft:    #6b6460;
+  --accent:      #d4476a;
+  --accent2:     #1982c4;
+  --cyan:        #00e5ff;
+  --purple:      #a78bfa;
+  --pink:        #f472b6;
+  --gold:        #c9963a;
+  --teal:        #0f8a80;
+  --border:      rgba(0,0,0,0.08);
+  --card-bg:     rgba(255,255,255,0.03);
+  --card-border: rgba(0,229,255,0.1);
+  --shadow-sm:   0 2px 12px rgba(0,0,0,0.06);
+  --shadow-md:   0 8px 32px rgba(0,0,0,0.10);
+  --shadow-lg:   0 20px 60px rgba(0,0,0,0.12);
+  --radius-sm:   12px;
+  --radius-md:   20px;
+  --radius-lg:   32px;
+  --serif:       'DM Serif Display', serif;
+  --sans:        'DM Sans', sans-serif;
+  --display:     'Syne', sans-serif;
+  --mono:        'Space Mono', monospace;
 }
- 
+
 /* ===== BASE ===== */
 html { scroll-behavior: smooth; }
- 
+
 body {
-  font-family: 'Courier Prime', monospace;
+  font-family: var(--display);
   font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-  background: var(--bg);
-  color: var(--ink);
+  font-weight: 400;
+  background: #060e1c;
+  color: #fff;
   line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
- 
+
 /* =============================================
    NAVBAR
    ============================================= */
@@ -69,10 +73,7 @@ body {
   color: var(--cyan);
   vertical-align: middle;
 }
-.logo-rest {
-  color: #fff;
-  vertical-align: middle;
-}
+.logo-rest { color: #fff; vertical-align: middle; }
 
 nav a {
   padding: 6px 14px;
@@ -89,16 +90,16 @@ nav a.active {
   color: var(--cyan);
   background: rgba(0,229,255,0.08);
 }
- 
+
 /* =============================================
    SECTION COMMON
    ============================================= */
 section {
   padding: 96px 60px;
-  position: relative;        /* ← tambah */
+  position: relative;
 }
 
-/* ← Tambah rule baru ini tepat setelah .section di atas */
+/* Faint grid overlay on every section */
 section::after {
   content: '';
   position: absolute;
@@ -111,42 +112,46 @@ section::after {
   z-index: 0;
 }
 
- 
 .section-header {
   display: flex;
-  align-items: baseline;
-  gap: 20px;
+  flex-direction: column;
+  gap: 6px;
   margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
 }
- 
 .section-num {
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--accent);
-  letter-spacing: 0.12em;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--cyan);
+  letter-spacing: 0.2em;
   opacity: 0.7;
 }
- 
+.section-num::before { content: '// '; }
+.section-num::after  { content: '. ' attr(data-title); }
+
 .section-title {
- font-family: 'Syne';
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
+  font-family: var(--display);
+  font-size: clamp(36px, 5vw, 50px);
+  font-style: normal;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
 }
 .section-title em {
-  font-family: 'Syne';
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-  color: var(--accent);
+  color: var(--cyan);
+  font-style: normal;
 }
- 
-/* =============================================
-   HOME — DARK TECH STYLE (REDESIGN)
-   Ganti seluruh blok HOME lama dengan ini
-   ============================================= */
 
+/* Dark sections: full-opacity label */
+.skills .section-num,
+.portfolio .section-num,
+.cv .section-num { opacity: 1; }
+
+/* =============================================
+   HOME
+   ============================================= */
 .home {
   min-height: 100vh;
   display: flex;
@@ -157,8 +162,6 @@ section::after {
   position: relative;
   overflow: hidden;
 }
-
-/* Grid background tipis */
 .home::before {
   content: '';
   position: absolute;
@@ -169,10 +172,8 @@ section::after {
   background-size: 60px 60px;
   pointer-events: none;
 }
-
 .home::after { display: none; }
 
-/* Orbs cahaya */
 .home-orb {
   position: absolute;
   border-radius: 50%;
@@ -185,7 +186,6 @@ section::after {
   width: 400px; height: 400px;
   background: rgba(0,229,255,0.08);
   top: -100px; left: -80px;
-  animation-delay: 0s;
 }
 .home-orb2 {
   width: 320px; height: 320px;
@@ -193,13 +193,11 @@ section::after {
   bottom: -80px; right: 20%;
   animation-delay: 2s;
 }
-
 @keyframes orb-pulse {
   from { transform: scale(1);   opacity: 0.7; }
   to   { transform: scale(1.2); opacity: 1;   }
 }
 
-/* Inner wrapper */
 .home-inner {
   width: 100%;
   max-width: 1100px;
@@ -211,13 +209,9 @@ section::after {
   z-index: 1;
 }
 
-/* ── Teks kiri ── */
-.home-text {
-  flex: 1;
-  max-width: 560px;
-}
+/* Left text */
+.home-text { flex: 1; max-width: 560px; }
 
-/* Komentar kode */
 .home-comment {
   font-family: 'Courier New', monospace;
   font-size: 12px;
@@ -226,7 +220,6 @@ section::after {
   letter-spacing: 0.04em;
 }
 
-/* Badge tags */
 .home-badge-row {
   display: flex;
   gap: 10px;
@@ -252,7 +245,6 @@ section::after {
   background: rgba(167,139,250,0.06);
 }
 
-/* Heading utama */
 .home-heading {
   font-family: 'Syne', sans-serif;
   font-size: 58px;
@@ -262,8 +254,6 @@ section::after {
   margin-bottom: 14px;
   letter-spacing: -0.01em;
 }
-
-/* Nama dengan gradient */
 .home-name {
   display: block;
   background: linear-gradient(135deg, #00e5ff 0%, #a78bfa 100%);
@@ -273,7 +263,6 @@ section::after {
   font-style: normal;
 }
 
-/* Info sekolah */
 .home-school {
   font-family: 'Syne', sans-serif;
   font-size: 10px;
@@ -282,8 +271,6 @@ section::after {
   color: rgba(255,255,255,0.3);
   margin-bottom: 20px;
 }
-
-/* Deskripsi */
 .home-desc {
   font-size: 14px;
   color: rgba(255,255,255,0.5);
@@ -294,14 +281,13 @@ section::after {
 .hl-cyan   { color: #00e5ff; font-weight: 600; }
 .hl-purple { color: #a78bfa; font-weight: 600; }
 
-/* Tombol CTA */
+/* CTA buttons */
 .home-cta-row {
   display: flex;
   gap: 14px;
   align-items: center;
   margin-bottom: 40px;
 }
-
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -322,7 +308,6 @@ section::after {
   transform: translateY(-2px);
   box-shadow: 0 0 36px rgba(0,229,255,0.5);
 }
-
 .btn-outline {
   display: inline-flex;
   align-items: center;
@@ -343,10 +328,9 @@ section::after {
   background: rgba(0,229,255,0.05);
 }
 
-/* Stats row */
+/* Stats */
 .home-stats {
   display: flex;
-  gap: 0;
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 6px;
   overflow: hidden;
@@ -380,15 +364,13 @@ section::after {
   margin-top: 5px;
 }
 
-/* ── Foto kanan ── */
+/* Right photo */
 .home-photo-wrap {
   flex-shrink: 0;
   position: relative;
   width: 290px;
   height: 370px;
 }
-
-/* Sudut frame */
 .home-frame-corner {
   position: absolute;
   width: 22px;
@@ -396,16 +378,12 @@ section::after {
   z-index: 2;
   transition: width 0.3s, height 0.3s;
 }
-.home-photo-wrap:hover .home-frame-corner {
-  width: 30px;
-  height: 30px;
-}
-.home-frame-corner.tl { top:-4px;    left:-4px;  border-top:2px solid #00e5ff; border-left:2px solid #00e5ff;   }
-.home-frame-corner.tr { top:-4px;    right:-4px; border-top:2px solid #00e5ff; border-right:2px solid #00e5ff;  }
+.home-photo-wrap:hover .home-frame-corner { width: 30px; height: 30px; }
+.home-frame-corner.tl { top:-4px;    left:-4px;  border-top:2px solid #00e5ff;    border-left:2px solid #00e5ff; }
+.home-frame-corner.tr { top:-4px;    right:-4px; border-top:2px solid #00e5ff;    border-right:2px solid #00e5ff; }
 .home-frame-corner.bl { bottom:-4px; left:-4px;  border-bottom:2px solid #00e5ff; border-left:2px solid #00e5ff; }
-.home-frame-corner.br { bottom:-4px; right:-4px; border-bottom:2px solid #00e5ff; border-right:2px solid #00e5ff;}
+.home-frame-corner.br { bottom:-4px; right:-4px; border-bottom:2px solid #00e5ff; border-right:2px solid #00e5ff; }
 
-/* Kontainer foto */
 .home-photo {
   width: 100%;
   height: 100%;
@@ -424,11 +402,8 @@ section::after {
   filter: brightness(0.88) contrast(1.05);
   transition: filter 0.4s;
 }
-.home-photo-wrap:hover .home-photo img {
-  filter: brightness(1) contrast(1.05);
-}
+.home-photo-wrap:hover .home-photo img { filter: brightness(1) contrast(1.05); }
 
-/* Efek scan line di foto */
 .home-photo-scan {
   position: absolute;
   left: 0; right: 0;
@@ -445,7 +420,6 @@ section::after {
   100% { top: 100%; opacity: 0; }
 }
 
-/* Label bawah foto */
 .home-photo-label {
   position: absolute;
   bottom: -26px;
@@ -455,72 +429,24 @@ section::after {
   color: rgba(255,255,255,0.25);
   letter-spacing: 0.06em;
 }
-
-/* Cursor berkedip di label */
 .cursor-blink {
   animation: cur-blink 1s step-end infinite;
   color: #00e5ff;
 }
 @keyframes cur-blink {
-  0%,100% { opacity: 1; }
+  0%, 100% { opacity: 1; }
   50%      { opacity: 0; }
 }
 
-/* ── Responsive ── */
-@media (max-width: 860px) {
-  .home { padding: 64px 24px; min-height: auto; }
-  .home-inner {
-    flex-direction: column-reverse;
-    text-align: center;
-    gap: 48px;
-  }
-  .home-text       { max-width: 100%; }
-  .home-desc       { max-width: 100%; }
-  .home-cta-row    { justify-content: center; }
-  .home-badge-row  { justify-content: center; }
-  .home-heading    { font-size: 42px; }
-  .home-photo-wrap { width: 230px; height: 290px; margin: 0 auto; }
-  .home-stats      { max-width: 100%; }
-}
-
-@media (max-width: 560px) {
-  .home-heading { font-size: 34px; }
-}
- 
-/* ============================================
-   RESET & BASE
-   ============================================ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --cyan: #00e5ff;
-  --purple: #a78bfa;
-  --pink: #f472b6;
-  --bg: #0a1628;
-  --card-bg: rgba(255,255,255,0.03);
-  --card-border: rgba(0,229,255,0.1);
-  --display: 'Syne', sans-serif;
-  --mono: 'Space Mono', monospace;
-}
-
-body {
-  background: #060e1c;
-  font-family: var(--display);
-  color: #fff;
-  min-height: 100vh;
-}
-
-/* ============================================
-   ABOUT SECTION
-   ============================================ */
+/* =============================================
+   ABOUT
+   ============================================= */
 .about {
   background: var(--bg);
   position: relative;
   overflow: hidden;
   padding: 80px 5%;
 }
-
-/* Orbs */
 .about-orb {
   position: absolute;
   border-radius: 50%;
@@ -539,42 +465,6 @@ body {
   bottom: -40px; left: 20%;
 }
 
-/* ============================================
-   SECTION HEADER
-   ============================================ */
-.section-header {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 48px;
-  position: relative;
-  z-index: 1;
-}
-.section-num {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 400;
-  color: var(--cyan);
-  letter-spacing: 0.2em;
-}
-.section-num::before { content: '// '; }
-.section-num::after  { content: '. ' attr(data-title); }
-
-.section-title {
-  font-family: var(--display);
-  font-size: clamp(36px, 5vw, 50px);
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.1;
-}
-.section-title em {
-  color: var(--cyan);
-  font-style: normal;
-}
-
-/* ============================================
-   GRID
-   ============================================ */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -583,9 +473,7 @@ body {
   z-index: 1;
 }
 
-/* ============================================
-   CARD BASE
-   ============================================ */
+/* Card base */
 .acard {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -611,7 +499,7 @@ body {
 }
 .acard:hover::before { opacity: 1; }
 
-.ac-wide  { grid-column: 1 / -1; }
+.ac-wide { grid-column: 1 / -1; }
 
 .ac-accent {
   background: linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(0,229,255,0.06) 100%);
@@ -622,9 +510,7 @@ body {
 }
 .ac-accent:hover { border-color: rgba(167,139,250,0.45); }
 
-/* ============================================
-   CARD INNER ELEMENTS
-   ============================================ */
+/* Card inner elements */
 .acard-toprow {
   display: flex;
   align-items: center;
@@ -649,11 +535,11 @@ body {
   letter-spacing: 0.02em;
 }
 .acard-body {
+  font-family: var(--display);
   font-size: 14.5px;
+  font-weight: 400;
   color: rgba(255,255,255,0.6);
   line-height: 1.9;
-  font-family: var(--display);
-  font-weight: 400;
 }
 .acard-quote {
   font-size: 14.5px;
@@ -675,9 +561,7 @@ body {
   margin: 10px 0 8px;
 }
 
-/* ============================================
-   META PAIR
-   ============================================ */
+/* Meta pair */
 .meta-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -694,11 +578,11 @@ body {
   padding: 10px 12px;
 }
 .meta-lbl {
+  font-family: var(--mono);
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: rgba(255,255,255,0.35);
-  font-family: var(--mono);
 }
 .meta-val {
   font-family: var(--display);
@@ -707,25 +591,21 @@ body {
   color: #fff;
 }
 
-/* ============================================
-   CHIPS
-   ============================================ */
+/* Chips */
 .chip-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
 .chip {
+  font-family: var(--display);
   font-size: 12.5px;
-  padding: 6px 16px;
-  border-radius: 3px;
   font-weight: 500;
   letter-spacing: 0.02em;
-  font-family: var(--display);
+  padding: 6px 16px;
+  border-radius: 3px;
 }
-.chip-rose  { background: rgba(212,71,106,0.1);  color: #f472b6; border: 1px solid rgba(212,71,106,0.25); }
-.chip-blue  { background: rgba(0,229,255,0.07);  color: #00e5ff; border: 1px solid rgba(0,229,255,0.2); }
-.chip-gray  { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.1); }
+.chip-rose { background: rgba(212,71,106,0.1);  color: #f472b6; border: 1px solid rgba(212,71,106,0.25); }
+.chip-blue { background: rgba(0,229,255,0.07);  color: #00e5ff; border: 1px solid rgba(0,229,255,0.2); }
+.chip-gray { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.1); }
 
-/* ============================================
-   TOMBOL GOTO
-   ============================================ */
+/* Go-to button */
 .btn-goto {
   display: inline-flex;
   align-items: center;
@@ -749,9 +629,7 @@ body {
   transform: translateX(4px);
 }
 
-/* ============================================
-   TOMBOL KAMERA — KELUARGA (visible badge style)
-   ============================================ */
+/* Camera badge (family photos) */
 .cam-badge {
   position: absolute;
   top: 20px;
@@ -791,7 +669,6 @@ body {
   letter-spacing: 0.08em;
   white-space: nowrap;
 }
-/* Pulse dot */
 .cam-badge::after {
   content: '';
   position: absolute;
@@ -802,13 +679,11 @@ body {
   animation: pulse-dot 2s ease-in-out infinite;
 }
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(1.4); }
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(1.4); }
 }
 
-/* ============================================
-   DAFTAR PENDIDIKAN
-   ============================================ */
+/* Education list */
 .edu-list { display: flex; flex-direction: column; gap: 2px; margin-top: 6px; }
 .edu-item {
   display: flex;
@@ -861,10 +736,7 @@ body {
   font-weight: 700;
 }
 
-
-/* ============================================
-   TOMBOL FOTO PENDIDIKAN — visible pill style
-   ============================================ */
+/* Education photo button */
 .edu-cam-btn {
   display: flex;
   align-items: center;
@@ -901,14 +773,12 @@ body {
   white-space: nowrap;
 }
 
-/* ============================================
-   OVERLAY BACKDROP
-   ============================================ */
+/* Photo overlay */
 .photo-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(4, 10, 24, 0.88);
+  background: rgba(4,10,24,0.88);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 9999;
@@ -940,7 +810,6 @@ body {
   color: #fff;
   letter-spacing: 0.04em;
 }
-
 .overlay-close {
   position: fixed;
   top: 20px; right: 20px;
@@ -958,14 +827,17 @@ body {
   z-index: 10000;
   font-family: var(--display);
 }
-.overlay-close:hover {
-  background: rgba(255,255,255,0.15);
-  color: #fff;
+.overlay-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+.overlay-hint {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-/* ============================================
-   POLAROID CARDS
-   ============================================ */
+/* Polaroids */
 .polaroid-row {
   display: flex;
   gap: 24px;
@@ -973,7 +845,6 @@ body {
   justify-content: center;
   align-items: flex-start;
 }
-
 .polaroid {
   background: #fff;
   padding: 14px 14px 50px;
@@ -989,55 +860,12 @@ body {
 .polaroid:nth-child(1) { --rot: -4deg; --delay: 0s; }
 .polaroid:nth-child(2) { --rot:  3deg; --delay: 0.07s; }
 .polaroid:nth-child(3) { --rot: -2deg; --delay: 0.14s; }
-.polaroid:hover        { transform: rotate(0deg) scale(1.05) translateY(-8px); }
+.polaroid:hover { transform: rotate(0deg) scale(1.05) translateY(-8px); }
 
 @keyframes polaroid-in {
   from { opacity: 0; transform: rotate(var(--rot)) scale(0.7) translateY(30px); }
   to   { opacity: 1; transform: rotate(var(--rot)) scale(1); }
 }
-
-.polaroid-img {
-  width: 180px; height: 180px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  position: relative;
-  overflow: hidden;
-  background: var(--ph-bg, #1a3a5c);
-}
-
-/* Grid overlay texture */
-.polaroid-img::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-.polaroid-img svg {
-  width: 42px; height: 42px;
-  stroke: rgba(255,255,255,0.6);
-  fill: none;
-  stroke-width: 1.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  position: relative;
-  z-index: 1;
-}
-.polaroid-img-label {
-  font-family: var(--mono);
-  font-size: 9px;
-  color: rgba(255,255,255,0.45);
-  letter-spacing: 0.06em;
-  position: relative;
-  z-index: 1;
-}
-
 .polaroid-caption {
   position: absolute;
   bottom: 12px; left: 0; right: 0;
@@ -1048,45 +876,14 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* helper hint di bawah overlay */
-.overlay-hint {
-  font-family: var(--mono);
-  font-size: 9px;
-  color: rgba(255,255,255,0.2);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 860px) {
-  .about-grid     { grid-template-columns: 1fr; }
-  .ac-wide        { grid-column: 1; }
-  .meta-pair      { grid-template-columns: 1fr 1fr; }
-  .polaroid-img   { width: 150px; height: 150px; }
-  .polaroid       { padding: 12px 12px 44px; }
-}
-@media (max-width: 540px) {
-  .cam-badge      { padding: 6px 10px 6px 8px; }
-  .meta-pair      { grid-template-columns: 1fr; }
-  .acard          { padding: 20px 18px; }
-  .polaroid-img   { width: 130px; height: 130px; }
-  .polaroid-row   { gap: 16px; }
-}
-
- /* =============================================
-   SKILLS — DARK TECH STYLE
-   Ganti seluruh blok SKILLS lama dengan ini
+/* =============================================
+   SKILLS
    ============================================= */
-
 .skills {
-  background: #0a1628;       /* sama dengan home */
+  background: #0a1628;
   position: relative;
   overflow: hidden;
 }
-
-/* Orbs background */
 .skills-orb {
   position: absolute;
   border-radius: 50%;
@@ -1105,25 +902,6 @@ body {
   bottom: -40px; right: -40px;
 }
 
-/* Section header warna dark */
-.skills .section-num {
-  color: #00e5ff;
-  opacity: 1;
-}
-.skills .section-title {
-  color: #fff;
-   font-family: var(--display);
-   font-size: 50px;
-  font-weight: 700;
-}
-.skills .section-title em {
-  color: #00e5ff;
-   font-family: var(--display);
-  font-size: 50px;
-  font-weight: 700;
-}
-
-/* Layout 2 kolom */
 .skills-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1133,13 +911,8 @@ body {
   z-index: 1;
 }
 
-/* ── Kiri: kartu-kartu skill ── */
-.skill-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
+/* Left: skill cards */
+.skill-cards { display: flex; flex-direction: column; gap: 12px; }
 .skill-card {
   display: flex;
   align-items: center;
@@ -1152,7 +925,6 @@ body {
   position: relative;
   overflow: hidden;
 }
-/* garis kiri accent saat hover */
 .skill-card::before {
   content: '';
   position: absolute;
@@ -1168,16 +940,9 @@ body {
   border-color: rgba(0,229,255,0.28);
   box-shadow: 0 8px 28px rgba(0,0,0,0.3);
 }
-.skill-card:hover::before {
-  opacity: 1;
-}
+.skill-card:hover::before { opacity: 1; }
 
-.skill-card-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
+.skill-card-left { display: flex; align-items: center; gap: 14px; }
 .skill-emoji {
   font-size: 24px;
   line-height: 1;
@@ -1190,7 +955,6 @@ body {
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 8px;
 }
-
 .skill-name {
   font-family: 'Syne', sans-serif;
   font-size: 14px;
@@ -1206,7 +970,6 @@ body {
   text-transform: uppercase;
   margin-top: 3px;
 }
-
 .skill-pct {
   font-family: 'Syne', sans-serif;
   font-size: 20px;
@@ -1218,19 +981,18 @@ body {
 .pct-teal  { color: #34d399; }
 .pct-rose  { color: #f472b6; }
 
-/* ── Kanan: panel bar progress ── */
+/* Right: progress bars */
 .skill-bars-panel {
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(0,229,255,0.1);
   border-radius: 14px;
-  padding: 28px 28px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
   gap: 22px;
   position: relative;
   overflow: hidden;
 }
-/* garis atas accent */
 .skill-bars-panel::before {
   content: '';
   position: absolute;
@@ -1238,7 +1000,6 @@ body {
   height: 2px;
   background: linear-gradient(90deg, transparent, rgba(0,229,255,0.5), transparent);
 }
-
 .bars-panel-header {
   display: flex;
   flex-direction: column;
@@ -1258,13 +1019,7 @@ body {
   color: #fff;
   letter-spacing: 0.02em;
 }
-
-/* Item bar */
-.sbar-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.sbar-item { display: flex; flex-direction: column; gap: 8px; }
 .sbar-meta {
   display: flex;
   justify-content: space-between;
@@ -1277,7 +1032,6 @@ body {
   font-weight: 700;
   font-size: 13px;
 }
-
 .sbar-track {
   background: rgba(255,255,255,0.06);
   border-radius: 2px;
@@ -1287,11 +1041,9 @@ body {
 .sbar-fill {
   height: 100%;
   border-radius: 2px;
-  width: 0;                    /* dimulai 0, dianimasikan JS */
+  width: 0;                       /* animated by JS */
   transition: width 1.2s cubic-bezier(.4,0,.2,1);
 }
-
-/* Quote bawah */
 .skills-quote {
   font-family: 'Courier New', monospace;
   font-size: 11px;
@@ -1303,22 +1055,14 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* ── Responsive ── */
-@media (max-width: 860px) {
-  .skills-layout { grid-template-columns: 1fr; }
-}
- /* =============================================
-   PORTFOLIO — DARK TECH STYLE
-   Ganti seluruh blok PORTFOLIO lama dengan ini
+/* =============================================
+   PORTFOLIO
    ============================================= */
-
 .portfolio {
   background: #0a1628;
   position: relative;
   overflow: hidden;
 }
-
-/* Orbs */
 .port-orb {
   position: absolute;
   border-radius: 50%;
@@ -1337,16 +1081,7 @@ body {
   bottom: -40px; left: 10%;
 }
 
-/* Section header */
-.portfolio .section-num  { color: #00e5ff; opacity: 1; }
-.portfolio .section-title { color: #fff;  font-family: var(--display);
-   font-size: 50px;
-  font-weight: 700;}
-.portfolio .section-title em { color: #00e5ff;  font-family: var(--display);
-   font-size: 50px;
-  font-weight: 700; }
-
-/* ── Tab kategori ── */
+/* Category tabs */
 .port-tabs {
   display: flex;
   gap: 10px;
@@ -1355,7 +1090,6 @@ body {
   z-index: 1;
   flex-wrap: wrap;
 }
-
 .port-tab {
   display: flex;
   align-items: center;
@@ -1385,7 +1119,7 @@ body {
 }
 .port-tab-icon { font-size: 16px; }
 
-/* ── Panel konten ── */
+/* Panels */
 .port-panel {
   display: none;
   position: relative;
@@ -1393,20 +1127,18 @@ body {
   animation: panel-in 0.35s ease both;
 }
 .port-panel.active { display: block; }
-
 @keyframes panel-in {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Grid kartu */
 .port-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
   gap: 20px;
 }
 
-/* ── Kartu portfolio ── */
+/* Portfolio card */
 .port-card {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(0,229,255,0.1);
@@ -1420,8 +1152,6 @@ body {
   border-color: rgba(0,229,255,0.3);
   box-shadow: 0 16px 40px rgba(0,0,0,0.4);
 }
-
-/* Gambar kartu */
 .port-card-img {
   position: relative;
   width: 100%;
@@ -1441,8 +1171,6 @@ body {
   transform: scale(1.06);
   filter: brightness(1);
 }
-
-/* Overlay hover di gambar */
 .port-card-overlay {
   position: absolute;
   inset: 0;
@@ -1455,7 +1183,6 @@ body {
   backdrop-filter: blur(2px);
 }
 .port-card:hover .port-card-overlay { opacity: 1; }
-
 .port-card-zoom {
   font-family: 'Syne', sans-serif;
   font-size: 12px;
@@ -1467,15 +1194,12 @@ body {
   border-radius: 3px;
   border: 1px solid rgba(0,229,255,0.4);
 }
-
-/* Info bawah kartu */
 .port-card-info {
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-
 .port-card-tag {
   font-family: 'Courier New', monospace;
   font-size: 9px;
@@ -1501,7 +1225,6 @@ body {
   background: rgba(251,191,36,0.1);
   border: 1px solid rgba(251,191,36,0.25);
 }
-
 .port-card-title {
   font-family: 'Syne', sans-serif;
   font-size: 14px;
@@ -1515,11 +1238,7 @@ body {
   line-height: 1.6;
 }
 
-/* =============================================
-   MODAL
-   ============================================= */
-
-/* Background gelap modal */
+/* Portfolio modal */
 .port-modal-bg {
   position: fixed;
   inset: 0;
@@ -1534,12 +1253,8 @@ body {
   pointer-events: none;
   transition: opacity 0.3s;
 }
-.port-modal-bg.open {
-  opacity: 1;
-  pointer-events: all;
-}
+.port-modal-bg.open { opacity: 1; pointer-events: all; }
 
-/* Kotak modal */
 .port-modal {
   background: #0d1e35;
   border: 1px solid rgba(0,229,255,0.2);
@@ -1552,11 +1267,8 @@ body {
   transform: scale(0.92) translateY(20px);
   transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
 }
-.port-modal-bg.open .port-modal {
-  transform: scale(1) translateY(0);
-}
+.port-modal-bg.open .port-modal { transform: scale(1) translateY(0); }
 
-/* Tombol tutup */
 .port-modal-close {
   position: absolute;
   top: 14px; right: 14px;
@@ -1576,8 +1288,6 @@ body {
   border-color: rgba(0,229,255,0.4);
   color: #00e5ff;
 }
-
-/* Gambar di modal */
 .port-modal-img-wrap {
   width: 100%;
   height: 260px;
@@ -1592,15 +1302,12 @@ body {
   display: block;
   filter: brightness(0.9);
 }
-
-/* Body modal */
 .port-modal-body {
   padding: 22px 24px 26px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
 .port-modal-tag {
   font-family: 'Courier New', monospace;
   font-size: 9px;
@@ -1611,7 +1318,6 @@ body {
   display: inline-block;
   align-self: flex-start;
 }
-
 .port-modal-title {
   font-family: 'Syne', sans-serif;
   font-size: 20px;
@@ -1620,14 +1326,11 @@ body {
   letter-spacing: 0.01em;
   line-height: 1.2;
 }
-
 .port-modal-desc {
   font-size: 13px;
   color: rgba(255,255,255,0.5);
   line-height: 1.75;
 }
-
-/* Tombol link di modal */
 .port-modal-btn {
   display: inline-flex;
   align-items: center;
@@ -1652,26 +1355,14 @@ body {
   box-shadow: 0 0 32px rgba(0,229,255,0.5);
 }
 
-/* ── Responsive ── */
-@media (max-width: 560px) {
-  .port-grid { grid-template-columns: 1fr; }
-  .port-modal-img-wrap { height: 200px; }
-  .port-modal-title { font-size: 16px; }
-  .port-tabs { gap: 8px; }
-  .port-tab { padding: 8px 14px; font-size: 11px; }
-}
 /* =============================================
-   CV — DARK TECH STYLE
-   Ganti seluruh blok CV lama dengan ini
+   CV
    ============================================= */
-
 .cv {
   background: #0a1628;
   position: relative;
   overflow: hidden;
 }
-
-/* Orbs */
 .cv-orb {
   position: absolute;
   border-radius: 50%;
@@ -1690,12 +1381,6 @@ body {
   bottom: -60px; right: -40px;
 }
 
-/* Section header */
-.cv .section-num   { color: #00e5ff; opacity: 1;  }
-.cv .section-title { color: #fff; font-family: var(--display); font-size: 50px; font-weight: 700; }
-.cv .section-title em { color: #00e5ff; font-family: var(--display); font-size: 50px; font-weight: 700; }
-
-/* ── Wrapper card utama ── */
 .cv-card {
   display: grid;
   grid-template-columns: 220px 1fr;
@@ -1707,9 +1392,7 @@ body {
   z-index: 1;
 }
 
-/* =============================================
-   CV KIRI
-   ============================================= */
+/* CV left */
 .cv-left {
   background: linear-gradient(170deg, #0d2137 0%, #111827 100%);
   border-right: 1px solid rgba(0,229,255,0.12);
@@ -1718,8 +1401,6 @@ body {
   flex-direction: column;
   gap: 20px;
 }
-
-/* Foto */
 .cv-photo-wrap {
   display: flex;
   justify-content: center;
@@ -1736,7 +1417,6 @@ body {
   z-index: 2;
   filter: brightness(0.9) contrast(1.05);
 }
-/* Ring berputar di sekitar foto */
 .cv-photo-ring {
   position: absolute;
   inset: -6px;
@@ -1747,10 +1427,7 @@ body {
   animation: spin-ring 4s linear infinite;
   z-index: 1;
 }
-@keyframes spin-ring {
-  to { transform: rotate(360deg); }
-}
-/* Glow di belakang foto */
+@keyframes spin-ring { to { transform: rotate(360deg); } }
 .cv-photo-glow {
   position: absolute;
   inset: -10px;
@@ -1758,8 +1435,6 @@ body {
   background: radial-gradient(circle, rgba(0,229,255,0.15), transparent 70%);
   z-index: 0;
 }
-
-/* Nama & Role */
 .cv-lname {
   font-family: 'Syne', sans-serif;
   font-size: 14px;
@@ -1783,13 +1458,7 @@ body {
   align-self: center;
   margin-top: -10px;
 }
-
-/* Seksi kiri */
-.cv-lsec {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.cv-lsec { display: flex; flex-direction: column; gap: 8px; }
 .cv-ltitle {
   font-family: 'Courier New', monospace;
   font-size: 9px;
@@ -1799,13 +1468,7 @@ body {
   padding-bottom: 6px;
   margin-bottom: 2px;
 }
-
-/* Baris data pribadi */
-.cv-lrow {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
+.cv-lrow { display: flex; flex-direction: column; gap: 1px; }
 .cv-llabel {
   font-size: 8px;
   color: rgba(255,255,255,0.28);
@@ -1815,7 +1478,8 @@ body {
 .cv-lval {
   font-size: 11px;
   color: rgba(255,255,255,0.8);
-  word-break: break-all;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .cv-llink {
   font-size: 11px;
@@ -1825,10 +1489,9 @@ body {
 }
 .cv-llink:hover { opacity: 0.75; text-decoration: underline; }
 
-/* Skill bars kiri */
-.cv-bars  { display: flex; flex-direction: column; gap: 10px; }
-.cv-bar   { display: flex; flex-direction: column; gap: 4px; }
-.cv-btop  {
+.cv-bars { display: flex; flex-direction: column; gap: 10px; }
+.cv-bar  { display: flex; flex-direction: column; gap: 4px; }
+.cv-btop {
   display: flex;
   justify-content: space-between;
   font-size: 10px;
@@ -1845,8 +1508,6 @@ body {
   border-radius: 2px;
   background: linear-gradient(90deg, #00e5ff, #a78bfa);
 }
-
-/* Chips kiri */
 .cv-chips { display: flex; flex-wrap: wrap; gap: 5px; }
 .cv-chip {
   font-family: 'Courier New', monospace;
@@ -1859,18 +1520,14 @@ body {
   border: 1px solid rgba(0,229,255,0.18);
 }
 
-/* =============================================
-   CV KANAN
-   ============================================= */
+/* CV right */
 .cv-right {
   background: rgba(255,255,255,0.015);
-  padding: 28px 28px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-
-/* Header nama kanan */
 .cv-rheader {
   border-bottom: 1px solid rgba(0,229,255,0.1);
   padding-bottom: 16px;
@@ -1901,8 +1558,6 @@ body {
   font-style: italic;
   line-height: 1.65;
 }
-
-/* Seksi kanan */
 .cv-rsec { display: flex; flex-direction: column; gap: 10px; }
 .cv-rtitle {
   font-family: 'Courier New', monospace;
@@ -1921,29 +1576,37 @@ body {
   background: rgba(0,229,255,0.1);
 }
 
-/* Pendidikan */
-.cv-edu { display: flex; flex-direction: column; gap: 10px; }
-.cv-erow {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
+.cv-edu, .cv-exp { display: flex; flex-direction: column; gap: 10px; }
+.cv-erow,
+.cv-xrow {
   padding: 10px 12px;
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(255,255,255,0.05);
   border-radius: 6px;
   transition: border-color 0.2s;
 }
-.cv-erow:hover {
-  border-color: rgba(0,229,255,0.18);
+.cv-erow:hover,
+.cv-xrow:hover { border-color: rgba(0,229,255,0.18); }
+.cv-erow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
 }
-.cv-eschool {
+.cv-xrow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.cv-eschool,
+.cv-xtitle {
   font-family: 'Syne', sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #fff;
 }
-.cv-esub {
+.cv-esub,
+.cv-xsub {
   font-size: 11px;
   color: rgba(255,255,255,0.35);
   margin-top: 2px;
@@ -1966,21 +1629,6 @@ body {
   border-color: rgba(0,229,255,0.4);
   font-weight: 700;
 }
-
-/* Pengalaman */
-.cv-exp { display: flex; flex-direction: column; gap: 10px; }
-.cv-xrow {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  padding: 10px 12px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 6px;
-  transition: border-color 0.2s;
-}
-.cv-xrow:hover { border-color: rgba(0,229,255,0.18); }
-
 .cv-xdot {
   width: 8px; height: 8px;
   border-radius: 50%;
@@ -1990,19 +1638,6 @@ body {
 .cv-xdot-cyan   { background: #00e5ff; box-shadow: 0 0 6px rgba(0,229,255,0.5); }
 .cv-xdot-purple { background: #a78bfa; box-shadow: 0 0 6px rgba(167,139,250,0.5); }
 
-.cv-xtitle {
-  font-family: 'Syne', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-}
-.cv-xsub {
-  font-size: 11px;
-  color: rgba(255,255,255,0.35);
-  margin-top: 2px;
-}
-
-/* Chips kanan */
 .cv-rchips { display: flex; flex-wrap: wrap; gap: 7px; }
 .rchip {
   font-family: 'Courier New', monospace;
@@ -2022,40 +1657,57 @@ body {
   border: 1px solid rgba(167,139,250,0.2);
 }
 
+/* =============================================
+   FOOTER
+   ============================================= */
 .footer {
   width: 100%;
   padding: 50px 20px;
   margin-top: 100px;
   text-align: center;
-
-  background: linear-gradient(
-    to top,
-    rgba(10, 22, 40, 0.9),
-    rgba(10, 22, 40, 0.6)
-  );
-
+  background: linear-gradient(to top, rgba(10,22,40,0.9), rgba(10,22,40,0.6));
   border-top: 1px solid rgba(0,255,255,0.15);
 }
-
 .footer-content p {
   margin: 6px 0;
   font-size: 14px;
   color: #9fb3c8;
   letter-spacing: 0.5px;
 }
+.footer-content span { color: #00eaff; font-weight: 600; }
+.footer-sub { font-size: 13px; opacity: 0.7; }
 
-.footer-content span {
-  color: #00eaff;
-  font-weight: 600;
-}
+/* =============================================
+   RESPONSIVE — keep this block at the END of the file
+   ============================================= */
 
-.footer-sub {
-  font-size: 13px;
-  opacity: 0.7;
-}
-
-/* ── Responsive ── */
+/* ---------- Tablet (<= 860px) ---------- */
 @media (max-width: 860px) {
+  /* Home */
+  .home { padding: 64px 24px; min-height: auto; }
+  .home-inner {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 48px;
+  }
+  .home-text       { max-width: 100%; }
+  .home-desc       { max-width: 100%; margin-left: auto; margin-right: auto; }
+  .home-cta-row    { justify-content: center; flex-wrap: wrap; }
+  .home-badge-row  { justify-content: center; }
+  .home-heading    { font-size: 42px; }
+  .home-photo-wrap { width: 230px; height: 290px; margin: 0 auto; }
+  .home-stats      { max-width: 100%; }
+
+  /* About */
+  .about-grid { grid-template-columns: 1fr; }
+  .ac-wide    { grid-column: 1; }
+  .polaroid   { padding: 12px 12px 44px; }
+  .polaroid img { width: 150px !important; height: 150px !important; }
+
+  /* Skills */
+  .skills-layout { grid-template-columns: 1fr; }
+
+  /* CV */
   .cv-card { grid-template-columns: 1fr; }
   .cv-left {
     border-right: none;
@@ -2064,7 +1716,91 @@ body {
   }
   .cv-right { padding: 24px; }
 }
+
+/* ---------- Phone (<= 768px) ---------- */
+@media (max-width: 768px) {
+  section,
+  .about { padding: 64px 20px; }
+
+  .section-header { margin-bottom: 32px; }
+
+  /* Navbar: logo on top, links scroll sideways */
+  .navbar {
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 10px 16px;
+  }
+  .logo { text-align: center; }
+  nav {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav a { flex: 0 0 auto; white-space: nowrap; padding: 6px 12px; }
+
+  /* Skills */
+  .skill-bars-panel { padding: 22px 18px; }
+
+  /* Portfolio modal */
+  .port-modal-bg { padding: 16px; }
+  .port-modal    { max-height: 90vh; overflow-y: auto; }
+  .port-tabs     { gap: 8px; }
+
+  /* CV */
+  .cv-rname { font-size: 22px; }
+  .cv-rsub  { line-height: 1.6; }
+
+  /* Footer */
+  .footer { margin-top: 60px; padding: 40px 16px; }
+}
+
+/* ---------- Small phone (<= 560px) ---------- */
+@media (max-width: 560px) {
+  .home-heading { font-size: 34px; }
+  .home-cta-row { flex-direction: column; align-items: stretch; }
+  .btn-primary,
+  .btn-outline  { justify-content: center; }
+
+  .port-modal-img-wrap { height: 200px; }
+  .port-modal-title    { font-size: 16px; }
+  .port-tab            { padding: 8px 14px; font-size: 11px; }
+}
+
+/* ---------- Small phone (<= 540px) ---------- */
+@media (max-width: 540px) {
+  .cam-badge {
+    position: relative;
+    top: auto; right: auto;
+    width: fit-content;
+    margin-bottom: 14px;
+    padding: 6px 10px 6px 8px;
+  }
+  .meta-pair  { grid-template-columns: 1fr; }
+  .acard      { padding: 20px 18px; }
+
+  .edu-item   { flex-wrap: wrap; }
+  .edu-info   { min-width: 0; }
+
+  /* Photo overlays scroll instead of getting cut off */
+  .photo-overlay {
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding-top: 72px;
+    gap: 20px;
+  }
+  .polaroid-row { gap: 16px; }
+  .polaroid img { width: 130px !important; height: 130px !important; }
+  .overlay-title { font-size: 18px; text-align: center; }
+}
+
+/* ---------- Extra small (<= 480px) ---------- */
 @media (max-width: 480px) {
   .cv-erow  { flex-direction: column; gap: 6px; }
   .cv-eyear { align-self: flex-start; }
+  .chip, .rchip { font-size: 11px; }
 }

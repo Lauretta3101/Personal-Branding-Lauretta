@@ -1,15 +1,15 @@
 /* ============================================================
-   intro.css — Animasi Intro Typewriter (Opsi B)
-   Letakkan file ini di:  assets/css/intro.css
-   Lalu link di index.html SEBELUM style.css:
+   intro.css — Typewriter intro animation
+   Location: assets/css/intro.css
+   Link it in index.html BEFORE style.css:
      <link rel="stylesheet" href="assets/css/intro.css">
    ============================================================ */
- 
-/* ── Overlay fullscreen, menutupi seluruh halaman ── */
+
+/* ── Fullscreen overlay covering the whole page ── */
 #intro-overlay {
   position: fixed;
-  inset: 0;                      /* top:0 right:0 bottom:0 left:0 */
-  z-index: 9999;                 /* paling atas, di atas navbar */
+  inset: 0;
+  z-index: 9999;                 /* above everything, including the navbar */
   background: #0a1628;
   display: flex;
   flex-direction: column;
@@ -19,15 +19,15 @@
   cursor: pointer;
   transition: opacity 0.8s ease;
 }
- 
-/* Kelas ini ditambahkan JS saat intro mau hilang */
+
+/* Added by JS when the intro should disappear */
 #intro-overlay.intro-fade-out {
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
 }
- 
-/* ── Grid background biru tipis ── */
+
+/* ── Faint blue grid background ── */
 .intro-grid-bg {
   position: absolute;
   inset: 0;
@@ -37,8 +37,8 @@
   background-size: 40px 40px;
   pointer-events: none;
 }
- 
-/* ── Konten tengah ── */
+
+/* ── Center content ── */
 .intro-content {
   display: flex;
   flex-direction: column;
@@ -46,9 +46,11 @@
   gap: 14px;
   position: relative;
   z-index: 10;
+  padding: 0 16px;
+  max-width: 100%;
 }
- 
-/* ── Tag <personal-branding> ── */
+
+/* ── <personal-branding> tags ── */
 .intro-tag-open,
 .intro-tag-close {
   font-family: 'Courier New', 'Lucida Console', monospace;
@@ -59,14 +61,14 @@
 }
 .intro-tag-open  { animation-delay: 0.2s; }
 .intro-tag-close { animation-delay: 2.7s; }
- 
-/* ── Baris nama + cursor ── */
+
+/* ── Name row + cursor ── */
 .intro-name-row {
   display: flex;
   align-items: center;
 }
- 
-/* ── Judul: efek typewriter ── */
+
+/* ── Title: typewriter effect ── */
 .intro-type-name {
   font-family: 'Courier New', 'Lucida Console', monospace;
   font-size: clamp(36px, 8vw, 68px);
@@ -76,14 +78,14 @@
   white-space: nowrap;
   overflow: hidden;
   width: 0;
-  /* Mengetik 8 karakter (LAURETTA) dalam 1.4 detik, dimulai setelah 0.6s */
+  /* Types 8 characters (LAURETTA) in 1.4s, starting after 0.6s */
   animation:
-    intro-type-out   1.4s steps(8, end) 0.6s forwards,
-    intro-blink-border 0.75s step-end  2.1s 4;
+    intro-type-out     1.4s  steps(8, end) 0.6s forwards,
+    intro-blink-border 0.75s step-end      2.1s 4;
   border-right: 3px solid #4fc3f7;
 }
- 
-/* ── Cursor berkedip ── */
+
+/* ── Blinking cursor ── */
 .intro-cursor {
   display: inline-block;
   width: 3px;
@@ -93,26 +95,28 @@
   opacity: 0;
   animation: intro-blink-cursor 0.8s step-end 2.1s infinite both;
 }
- 
-/* ── Garis pemisah ── */
+
+/* ── Divider line ── */
 .intro-divider {
   width: 0;
+  max-width: 80vw;
   height: 1px;
   background: linear-gradient(90deg, transparent, #4fc3f7, transparent);
   animation: intro-expand-line 0.7s ease 2.1s forwards;
 }
- 
-/* ── Role teks ── */
+
+/* ── Role text ── */
 .intro-role {
   font-family: 'Courier New', monospace;
   font-size: 12px;
   color: #4fc3f7;
   letter-spacing: 3px;
+  text-align: center;
   opacity: 0;
   animation: intro-fade-in 0.5s ease 2.3s both;
 }
- 
-/* ── Progress bar bawah ── */
+
+/* ── Bottom progress bar ── */
 .intro-progress-bar {
   position: absolute;
   bottom: 60px;
@@ -124,7 +128,6 @@
   opacity: 0;
   animation: intro-fade-in 0.4s ease 1.8s both;
 }
- 
 .intro-progress-fill {
   height: 100%;
   width: 0%;
@@ -132,8 +135,8 @@
   border-radius: 2px;
   animation: intro-fill-bar 3s ease 2s forwards;
 }
- 
-/* ── Teks hint di paling bawah ── */
+
+/* ── Hint text at the very bottom ── */
 .intro-enter-hint {
   position: absolute;
   bottom: 28px;
@@ -144,40 +147,44 @@
   text-transform: uppercase;
   animation: intro-pulse 1.8s ease-in-out 4s infinite;
 }
- 
+
 /* ============================================================
-   KEYFRAMES — semua prefix "intro-" agar tidak bentrok
-   dengan animasi di style.css
+   KEYFRAMES — all prefixed "intro-" to avoid clashing
+   with animations in style.css
    ============================================================ */
- 
 @keyframes intro-fade-in {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
- 
 @keyframes intro-type-out {
   to { width: 100%; }
 }
- 
 @keyframes intro-blink-border {
   50% { border-color: transparent; }
 }
- 
 @keyframes intro-blink-cursor {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+  50%      { opacity: 0; }
 }
- 
 @keyframes intro-expand-line {
   to { width: 280px; }
 }
- 
 @keyframes intro-fill-bar {
   to { width: 100%; }
 }
- 
 @keyframes intro-pulse {
   0%, 100% { opacity: 0; }
-  50%       { opacity: 0.6; }
+  50%      { opacity: 0.6; }
 }
- 
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+@media (max-width: 480px) {
+  .intro-tag-open,
+  .intro-tag-close  { font-size: 11px; letter-spacing: 1px; }
+  .intro-type-name  { letter-spacing: 2px; border-right-width: 2px; }
+  .intro-role       { font-size: 10px; letter-spacing: 1.5px; line-height: 1.7; }
+  .intro-progress-bar { width: 150px; bottom: 56px; }
+  .intro-enter-hint   { font-size: 9px; letter-spacing: 3px; }
+}
