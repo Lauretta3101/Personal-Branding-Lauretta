@@ -1,9 +1,4 @@
-/* =============================================
-   LAURETTA — style.css (redesign)
-   Font: DM Serif Display + DM Sans + Syne
-   ============================================= */
- 
-/* ===== RESET ===== */
+
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
  
 /* ===== CSS VARIABLES ===== */

@@ -3,7 +3,7 @@ window.addEventListener('load', () => {
     el.style.width = (el.dataset.w || 0) + '%';
   });
 
-  // FIX INTRO
+  // INTRO FIX
   const intro = document.getElementById('intro-overlay');
 
   if (intro) {
@@ -26,33 +26,35 @@ const folderData = {
     thumb: '#e3f2fd',
     btn: '#2196f3',
     projects: [
-      { icon: '🌐', title: 'Website Personal Branding', desc: 'Website portofolio pribadi Lauretta Josephine menggunakan HTML & CSS dengan desain modern dan responsif.', link: 'https://drive.google.com' },
-      { icon: '💻', title: 'Website Sekolah', desc: 'Website informasi sekolah dengan halaman beranda, profil, dan galeri kegiatan.', link: 'https://drive.google.com' }
+      { icon: '🌐', title: 'Personal Branding Website', desc: "Lauretta Josephine's personal portfolio website built with HTML & CSS, featuring a modern and responsive design.", link: 'https://drive.google.com' },
+      { icon: '💻', title: 'School Website', desc: 'A school information website with a home page, profile, and activity gallery.', link: 'https://drive.google.com' }
     ]
   },
-  desain: {
-    name: 'Desain Grafis',
+  design: {
+    name: 'Graphic Design',
     dot: '#f06292',
     thumb: '#fce4ec',
     btn: '#e91e8c',
     projects: [
-      { icon: '🎨', title: 'Poster Kegiatan Sekolah', desc: 'Desain poster untuk kegiatan class meeting menggunakan Canva.', link: 'https://drive.google.com' },
-      { icon: '✏️', title: 'Flyer Promosi Bazar', desc: 'Desain flyer digital untuk acara bazar sekolah.', link: 'https://drive.google.com' }
+      { icon: '🎨', title: 'School Event Poster', desc: 'A poster design for the class meeting event, made with Canva.', link: 'https://drive.google.com' },
+      { icon: '✏️', title: 'Bazaar Promotion Flyer', desc: 'A digital flyer design for the school bazaar event.', link: 'https://drive.google.com' }
     ]
   },
-  presentasi: {
-    name: 'Presentasi',
+  presentation: {
+    name: 'Presentation',
     dot: '#ffa726',
     thumb: '#fff3e0',
     btn: '#f57c00',
     projects: [
-      { icon: '📊', title: 'Slide Presentasi PKK', desc: 'Materi presentasi menggunakan PowerPoint.', link: 'https://drive.google.com' }
+      { icon: '📊', title: 'PKK Presentation Slides', desc: 'Presentation material made with PowerPoint.', link: 'https://drive.google.com' }
     ]
   }
 };
 
 function openFolder(key) {
   const d = folderData[key];
+  if (!d) return;
+
   document.getElementById('detailDot').style.background = d.dot;
   document.getElementById('detailName').textContent = d.name;
 
@@ -65,7 +67,7 @@ function openFolder(key) {
         <div class="project-title">${p.title}</div>
         <div class="project-desc">${p.desc}</div>
         <a class="project-link" href="${p.link}" target="_blank" style="background:${d.btn}">
-          ↗ Lihat di Drive
+          ↗ View on Drive
         </a>
       </div>
     </div>
@@ -84,16 +86,23 @@ function closeFolder() {
 const navLinks = document.querySelectorAll('nav a');
 const sections = document.querySelectorAll('section[id]');
 
-window.addEventListener('scroll', () => {
+function updateActiveNav() {
   let cur = '';
   sections.forEach(s => {
     if (window.scrollY >= s.offsetTop - 120) cur = s.id;
   });
 
   navLinks.forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    const active = a.getAttribute('href') === '#' + cur;
+    a.classList.toggle('active', active);
+    // On mobile the nav scrolls horizontally, so keep the active link visible
+    if (active && a.scrollIntoView && window.innerWidth <= 768) {
+      a.scrollIntoView({ inline: 'center', block: 'nearest' });
+    }
   });
-});
+}
+
+window.addEventListener('scroll', updateActiveNav, { passive: true });
 
 
 // ===== OVERLAY =====
@@ -108,55 +117,57 @@ function closeOverlay(id) {
 }
 
 
-// ===== FOTO PENDIDIKAN =====
-const ROT = ['-4deg','3.5deg','-2.5deg'];
+// ===== EDUCATION PHOTOS =====
+const ROT = ['-4deg', '3.5deg', '-2.5deg'];
 
 const photos = {
-  TK:  ['assets/images/tk1.jpeg','assets/images/tk2.jpeg'],
-  SD:  ['assets/images/sd1.jpeg','assets/images/sd2.jpeg'],
-  SMP: ['assets/images/smp1.jpeg','assets/images/smp2.jpeg'],
-  SMK: ['assets/images/smk1.jpeg','assets/images/smk2.jpeg'],
+  TK:  ['assets/images/tk1.jpeg', 'assets/images/tk2.jpeg'],
+  SD:  ['assets/images/sd1.jpeg', 'assets/images/sd2.jpeg'],
+  SMP: ['assets/images/smp1.jpeg', 'assets/images/smp2.jpeg'],
+  SMK: ['assets/images/smk1.jpeg', 'assets/images/smk2.jpeg'],
+};
+
+// Photo captions (edit these to match your actual photos)
+const captions = {
+  TK:  ['Kindergarten Days', 'Kindergarten Memories'],
+  SD:  ['Elementary School Days', 'Elementary School Memories'],
+  SMP: ['Junior High Days', 'Junior High Memories'],
+  SMK: ['Vocational High School Days', 'Vocational High School Memories'],
 };
 
 function openEduOverlay(level, school, year) {
   const row = document.getElementById('edu-polaroid-row');
 
   if (!row) {
-    console.error("Container tidak ditemukan!");
+    console.error('Container not found!');
     return;
   }
 
-  document.getElementById('edu-overlay-label').textContent = `📷 galeri — ${year}`;
-  document.getElementById('edu-overlay-title').textContent = `Foto ${level} — ${school}`;
+  document.getElementById('edu-overlay-label').textContent = `📷 gallery — ${year}`;
+  document.getElementById('edu-overlay-title').textContent = `${level} Photos — ${school}`;
 
   row.innerHTML = '';
 
   if (!photos[level]) {
-    console.error("Level tidak ditemukan:", level);
+    console.error('Level not found:', level);
     return;
   }
 
- const captions = {
-  TK:  ['Foto di depan kelas saat TK', 'Foto di dalam kelas saat TK'],
-  SD:  ['Foto dirumah untuk yearbook karena covid jadi di edit', 'Foto dokumentasi saat Ujian Kelulusan SD'],
-  SMP: ['Foto bersama teman saat menang ligos', 'Foto saat mau yearbook SMP dengan tema cheerful'],
-  SMK: ['Foto setelah pensi saat KBT di Ampel', 'Foto saat KBT di Ampel dengan teman teman kelas'],
-};
-
-photos[level].forEach((src, i) => {
-  row.innerHTML += `
-    <div class="polaroid" style="--rot:${ROT[i]};--delay:${i * 0.08}s">
-      <img src="${src}" style="width:180px;height:180px;object-fit:cover;">
-      <div class="polaroid-caption">${captions[level][i]}</div>
-    </div>
-  `;
-});
+  photos[level].forEach((src, i) => {
+    const caption = (captions[level] && captions[level][i]) || '';
+    row.innerHTML += `
+      <div class="polaroid" style="--rot:${ROT[i % ROT.length]};--delay:${i * 0.08}s">
+        <img src="${src}" alt="${caption}" style="width:180px;height:180px;object-fit:cover;">
+        <div class="polaroid-caption">${caption}</div>
+      </div>
+    `;
+  });
 
   openOverlay('edu-overlay');
 }
 
 
-// ===== OVERLAY CLOSE EVENT =====
+// ===== OVERLAY CLOSE EVENTS =====
 document.querySelectorAll('.photo-overlay').forEach(el => {
   el.addEventListener('click', e => {
     if (e.target === el) closeOverlay(el.id);
